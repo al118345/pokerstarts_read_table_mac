@@ -27,7 +27,7 @@ def readPlayerCards(filename: str) -> list:
     #img.save('my.png')
     img.show()
     # if card not on table yet
-
+    print('test')
     return cards
 
 

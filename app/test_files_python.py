@@ -118,5 +118,79 @@ def emptyCard(img) -> bool:
         if len(np.argwhere(orange_mask)) > 100:
             return True
 
-aux = readPlayerCards(' ')
+def comparar_imagenes(img2, img1):
+    if isinstance(img1, str):
+        imagen1 = Image.open(img1)
+    else:
+        imagen1=img1
+    if isinstance(img2, str):
+        imagen2 = Image.open(img2)
+    else:
+        imagen2=img2
+
+
+    imagen2 = imagen2.resize((160,60), Image.ANTIALIAS).convert('RGB')
+    imagen1 = imagen1.resize((160,60), Image.ANTIALIAS).convert('RGB')
+    img2 = np.array(imagen2)
+    img1 = np.array(imagen1)
+    from skimage.metrics import structural_similarity as ssim
+    s = ssim(img1, img2, multichannel=True)
+    return s
+
+
+
+def number_player(img):
+
+
+    player1 = [80,335,96,341]
+    player2 = [107,126,125,135]
+    player3 = [437,65,461,71]
+    player4 = [768,129,787,136]
+    player5 = [858,334,882,340]
+
+    image = cv2.imread(img)
+    image = cv2.imread("125326_308006ruben.png")
+    #image = cv2.imread("124535_473536ruben.png")
+
+
+    '''
+    card1 = image[player1[1]:player1[3], player1[0]:player1[2]]
+    symbol_pil = Image.fromarray(card1, 'RGB')
+    #symbol_pil.save("/Users/rubenperezibanez/PycharmProjects/Pokerstars-Api/app/imagenes/jugadores/player1.jpeg")
+
+    card1 = image[player2[1]:player2[3], player2[0]:player2[2]]
+    symbol_pil = Image.fromarray(card1, 'RGB')
+    #symbol_pil.save("/Users/rubenperezibanez/PycharmProjects/Pokerstars-Api/app/imagenes/jugadores/player2.jpeg")
+
+    card1 = image[player3[1]:player3[3], player3[0]:player3[2]]
+    symbol_pil = Image.fromarray(card1, 'RGB')
+    #symbol_pil.save("/Users/rubenperezibanez/PycharmProjects/Pokerstars-Api/app/imagenes/jugadores/player3.jpeg")
+
+    card1 = image[player4[1]:player4[3], player4[0]:player4[2]]
+    symbol_pil = Image.fromarray(card1, 'RGB')
+    #symbol_pil.save( "/Users/rubenperezibanez/PycharmProjects/Pokerstars-Api/app/imagenes/jugadores/player4.jpeg")
+
+    card1 = image[player5[1]:player5[3], player5[0]:player5[2]]
+    symbol_pil = Image.fromarray(card1, 'RGB')
+    #symbol_pil.save("/Users/rubenperezibanez/PycharmProjects/Pokerstars-Api/app/imagenes/jugadores/player5.jpeg")
+    '''
+
+    ruta = "/Users/rubenperezibanez/PycharmProjects/Pokerstars-Api/app/imagenes/jugadores/"
+    ficheros = ["player1.jpeg","player2.jpeg","player3.jpeg","player4.jpeg","player5.jpeg"]
+    players = [player1,player2,player3,player4,player5]
+    cont = 0
+    resultado = 0
+    for i in ficheros:
+
+        card1 = image[players[cont][1]:players[cont][3], players[cont][0]:players[cont][2]]
+        symbol_pil = Image.fromarray(card1, 'RGB')
+        comparacion = comparar_imagenes( symbol_pil, ruta +i)
+        cont = cont +1
+        if comparacion> 0.9:
+            resultado = resultado +1
+
+    return resultado
+
+
+aux = number_player(' ')
 print (aux)

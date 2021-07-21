@@ -1,11 +1,11 @@
 import enum
 import os
-
+#suit_dict = {'♠': 's', '♣': 'c', '♥': 'h', '♦': 'd'}
 class Colors(enum.Enum):
-    Hearts = "H"
-    Tiles = "T"
-    Clovers = "C"
-    Pikes = "P"
+    Hearts = "h"
+    Tiles = "d"
+    Clovers = "c"
+    Pikes = "s"
     Error = "X"
 
 class Card:
@@ -14,7 +14,7 @@ class Card:
         self.color = color
     
     def __str__(self):
-        return self.color.value + self.value
+        return self.value+ self.color.value 
 
     # seems like printing lists requires that one
     def __repr__(self):

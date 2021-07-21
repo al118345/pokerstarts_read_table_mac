@@ -182,8 +182,8 @@ def grabScreen() -> list:
                 screenshots.append(screenshot)
 
                 #borrar
-                filename = 'ruben/'+ datetime.now().strftime("%H%M%S_%f") +'ruben' + '.png'
-                cropped_im.save(filename)
+                #filename = 'ruben/'+ datetime.now().strftime("%H%M%S_%f") +'ruben' + '.png'
+                #cropped_im.save(filename)
 
         return screenshots
 

@@ -43,11 +43,38 @@ class ChangesHandler:
 
         
     def printData(self):
+        from poker.hand import Combo, Range
+
+        import poker_prob.holdem_calc
+
+        board = []
+        villan_hand = None
+        exact_calculation = False
+        verbose = True
+        num_sims = 1
+        read_from_file = None
+        if '7h7h':
+            print(f'Player cards: ')
+        else:
+            hero_hand = Combo(str(self.playerCards[0])+str(self.playerCards[1]))
+            odds = poker_prob.holdem_calc.calculate_odds_villan(board,
+                                                                exact_calculation,
+                                                                num_sims,
+                                                                read_from_file,
+                                                                hero_hand,
+                                                                villan_hand,
+                                                                verbose,
+                                                                num_player=5,
+                                                                print_elapsed_time=True)
+            print (odds)
+            print(f'Player cards: {hero_hand}')
+
         print (f'Player cards: {self.playerCards}')
         print (f'Cards on table: {self.tableCards}')
         print (f'Game state: {self.gameState}')
         print (f'Table: {self.tableName}')
         print ("########################")
+
 
 class MultiBot:
     bot_dict = {}

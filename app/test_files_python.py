@@ -26,10 +26,10 @@ def readPlayerCards(filename: str) -> list:
         symbol = image[420 +20:435 +20,
                  430 + 9:451 - 1]
         symbol_pil = Image.fromarray(card1, 'RGB')
-        symbol_pil.show()
+        #symbol_pil.show()
 
         symbol_pil = Image.fromarray(symbol, 'RGB')
-        symbol_pil.show()
+        #symbol_pil.show()
 
         symbol2 = image[420 + 35:435 + 36,
                   430 + 9 + 42:451 - 1 + 45]
@@ -118,7 +118,7 @@ def emptyCard(img) -> bool:
         if len(np.argwhere(orange_mask)) > 100:
             return True
 
-def comparar_imagenes(img2, img1):
+def comparar_imagenes_jugadores(img2, img1):
     if isinstance(img1, str):
         imagen1 = Image.open(img1)
     else:
@@ -149,9 +149,13 @@ def number_player(img):
     player5 = [858,334,882,340]
 
     image = cv2.imread(img)
-    image = cv2.imread("125326_308006ruben.png")
-    #image = cv2.imread("124535_473536ruben.png")
 
+
+    image = cv2.imread("104314_321879ruben.png")
+
+
+    image = cv2.imread("125326_308006ruben.png")
+    image = cv2.imread("124535_473536ruben.png")
 
     '''
     card1 = image[player1[1]:player1[3], player1[0]:player1[2]]
@@ -169,10 +173,11 @@ def number_player(img):
     card1 = image[player4[1]:player4[3], player4[0]:player4[2]]
     symbol_pil = Image.fromarray(card1, 'RGB')
     #symbol_pil.save( "/Users/rubenperezibanez/PycharmProjects/Pokerstars-Api/app/imagenes/jugadores/player4.jpeg")
+   
 
     card1 = image[player5[1]:player5[3], player5[0]:player5[2]]
     symbol_pil = Image.fromarray(card1, 'RGB')
-    #symbol_pil.save("/Users/rubenperezibanez/PycharmProjects/Pokerstars-Api/app/imagenes/jugadores/player5.jpeg")
+    symbol_pil.save("/Users/rubenperezibanez/PycharmProjects/Pokerstars-Api/app/imagenes/jugadores/player5.jpeg")
     '''
 
     ruta = "/Users/rubenperezibanez/PycharmProjects/Pokerstars-Api/app/imagenes/jugadores/"
@@ -184,13 +189,51 @@ def number_player(img):
 
         card1 = image[players[cont][1]:players[cont][3], players[cont][0]:players[cont][2]]
         symbol_pil = Image.fromarray(card1, 'RGB')
-        comparacion = comparar_imagenes( symbol_pil, ruta +i)
+        comparacion = comparar_imagenes_jugadores( symbol_pil, ruta +i)
         cont = cont +1
         if comparacion> 0.9:
             resultado = resultado +1
 
     return resultado
+#las últimas dos funciones se tienen que volcar en el fichero
+# tools con el objetivo de llamar los métodos i ver la cantidad de jugadores
 
 
 aux = number_player(' ')
 print (aux)
+
+mano_jugador = readPlayerCards('')
+
+
+###parte prob
+
+# Function to convert
+def listToString(s):
+    # initialize an empty string
+    str1 = ""
+
+    # traverse in the string
+    for ele in s:
+        str1 += str(ele)
+        # return string
+    return str1
+
+
+
+from poker.hand import Combo, Range
+import poker_prob.holdem_calc
+villan_hand = None
+exact_calculation = False
+verbose = True
+num_sims = 1
+read_from_file = None
+hero_hand = Combo(listToString(mano_jugador))
+board = []
+odds = poker_prob.holdem_calc.calculate_odds_villan(board, exact_calculation,
+                        num_sims, read_from_file ,
+                        hero_hand, villan_hand,
+                        verbose, num_player= aux, print_elapsed_time = True)
+
+print(odds)
+
+print()

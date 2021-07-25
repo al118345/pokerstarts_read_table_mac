@@ -3,6 +3,35 @@ import models
 import os
 import cv2
 import threading
+from poker.hand import Combo, Range
+import poker_prob.holdem_calc
+
+
+# Function to convert
+def listToString2(s):
+    # initialize an empty string
+    str1 = []
+
+    # traverse in the string
+    for ele in s:
+        if '?' not in str(ele) and 'X' not in str(ele):
+            str1.append(str(ele))
+        # return string
+    return str1
+
+
+
+def listToString(s):
+    # initialize an empty string
+    str1 = ""
+
+    # traverse in the string
+    for ele in s:
+        if '?' not in  str(ele) and 'X' not in str(ele):
+            str1 += str(ele)
+        # return string
+    return str1
+
 
 class PokerBot:
     gameState = ""
@@ -23,6 +52,7 @@ class PokerBot:
     def readData(self, screenshot):
         self.tableCards = tools.readTableCards(screenshot.filename)
         self.playerCards = tools.readPlayerCards(screenshot.filename)
+        self.number_player = tools.number_player(screenshot.filename)
         self.gameState = self.checkGameState()
         
 
@@ -33,30 +63,41 @@ class ChangesHandler:
         self.playerCards = bot.playerCards
         self.tableCards = bot.tableCards
         self.tableName = tableName
-    
+        self.number_player = 5
+
+
     def check(self, bot: PokerBot):
         if self.gameState != bot.gameState or self.playerCards != bot.playerCards or self.tableCards != bot.tableCards:
             self.gameState = bot.gameState
             self.playerCards = bot.playerCards
             self.tableCards = bot.tableCards
+            self.number_player =  bot.number_player
             self.printData()
 
         
     def printData(self):
-        from poker.hand import Combo, Range
 
-        import poker_prob.holdem_calc
 
-        board = []
-        villan_hand = None
-        exact_calculation = False
-        verbose = True
-        num_sims = 1
-        read_from_file = None
-        if '7h7h':
-            print(f'Player cards: ')
-        else:
-            hero_hand = Combo(str(self.playerCards[0])+str(self.playerCards[1]))
+
+
+
+        print (f'Player cards: {self.playerCards} and {self.number_player}')
+        print (f'Cards on table: {self.tableCards}')
+        print (f'Game state: {self.gameState}')
+        print (f'Table: {self.tableName}')
+        print ("########################")
+        try:
+            villan_hand = None
+            exact_calculation = False
+            verbose = True
+            num_sims = 1
+            read_from_file = None
+            hero_hand = Combo(listToString(self.playerCards))
+            try:
+                board =  listToString2(self.tableCards)
+            except:
+                print("vacio")
+                board = []
             odds = poker_prob.holdem_calc.calculate_odds_villan(board,
                                                                 exact_calculation,
                                                                 num_sims,
@@ -64,16 +105,11 @@ class ChangesHandler:
                                                                 hero_hand,
                                                                 villan_hand,
                                                                 verbose,
-                                                                num_player=5,
+                                                                num_player=self.number_player,
                                                                 print_elapsed_time=True)
-            print (odds)
-            print(f'Player cards: {hero_hand}')
-
-        print (f'Player cards: {self.playerCards}')
-        print (f'Cards on table: {self.tableCards}')
-        print (f'Game state: {self.gameState}')
-        print (f'Table: {self.tableName}')
-        print ("########################")
+            print(f'Resultado: {odds}')
+        except Exception as e:
+            pass
 
 
 class MultiBot:

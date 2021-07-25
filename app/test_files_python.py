@@ -77,7 +77,7 @@ def readTableCards(filename: str) -> list:
                    table_cards[i] + 3:table_cards[i + 1] -7]
             if not emptyCard(card):
                 symbol_pil = Image.fromarray(symbol, 'RGB')
-                symbol_pil.show()
+                #symbol_pil.show()
                 cards.append(cardInfo(card,symbol_pil))
         elif i == 8:
             card = image[cards_y1 +7:cards_y2 ,
@@ -86,7 +86,7 @@ def readTableCards(filename: str) -> list:
                    table_cards[i] + 14:table_cards[i + 1]+2]
             if not emptyCard(card):
                 symbol_pil = Image.fromarray(symbol, 'RGB')
-                symbol_pil.show()
+                #symbol_pil.show()
 
                 symbol_pil = Image.fromarray(symbol, 'RGB')
                 cards.append(cardInfo(card,symbol_pil))
@@ -219,6 +219,17 @@ def listToString(s):
     return str1
 
 
+# Function to convert
+def listToString2(s):
+    # initialize an empty string
+    str1 = []
+
+    # traverse in the string
+    for ele in s:
+        str1.append(str(ele))
+        # return string
+    return str1
+
 
 from poker.hand import Combo, Range
 import poker_prob.holdem_calc
@@ -228,7 +239,15 @@ verbose = True
 num_sims = 1
 read_from_file = None
 hero_hand = Combo(listToString(mano_jugador))
-board = []
+print(readTableCards(''))
+
+board =listToString2(readTableCards(''))
+
+print(board)
+print(mano_jugador)
+
+board = ['Kh', '2s', '9c', '8h']
+
 odds = poker_prob.holdem_calc.calculate_odds_villan(board, exact_calculation,
                         num_sims, read_from_file ,
                         hero_hand, villan_hand,

@@ -1,19 +1,17 @@
 # This app reads data from PokerStars game.
 ### It can work on any number of tables simultaneously
 
-PokerStars windows don't even have to be visible, but **cannot be minimalized**.
-It needs admin privileges since it grabs screenshots with win32api. It's fastest way and do not require windows to be on top.
+PokerStars mac don't even have to be visible, but **cannot be minimalized**.
 
 At the moment this app recons:
 * Cards on table
+* Probability to win
 * Player cards
 * Game stage
 
 # How to
 **To make it work you need to set up orange table and default deck with 4 colors!**
 * install requirements.txt
-* enter Pokerstars rooms (any number)
-* run powershell as admin
 * python main.py
 
 Letter "X" and "?" signs means that card wasn't recognized properly.
